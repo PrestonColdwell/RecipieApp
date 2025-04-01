@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
@@ -32,9 +31,19 @@ public class Recipe {
     private List<String> tags;
     private String userId;
 
-    @DocumentReference
-    private List<Review> reviewIds;
+    private List<UUID> reviewIds;
 
     private Instant createdAt;
     private Instant updatedAt;
+
+    // Additional fields
+    private String difficultyLevel;
+    private Number servings;
+    private NutritionInfo nutritionInfo;
+    private String cuisine;
+    private String author;
+    private String videoUrl;
+    private String notes;
+    private Number estimatedCost;
+    private Double rating;
 }

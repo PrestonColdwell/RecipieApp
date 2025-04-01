@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ingredient {
-    private String name;
-    private String quantity;
-    private String unit;
-    private boolean optional;
-    private String preparation;
+public class NutritionInfo {
+    private Number calories;
+    private Number fat;
+    private Number protein;
+    private Number carbohydrates;
 }

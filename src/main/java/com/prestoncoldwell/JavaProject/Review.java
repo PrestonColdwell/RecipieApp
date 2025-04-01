@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Document(collection = "reviews")
@@ -14,11 +17,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Review {
     @Id
+    @Field(targetType = FieldType.STRING)
     private UUID id;
 
-    private String body;
+    private UUID recipeId;
+    private String userId;
+    private Double rating;
+    private String comment;
+    private Instant createdAt;
 
-    public Review(String body) {
-        this.body = body;
+    // Constructor to match the parameters passed in the service
+    public Review(String reviewBody) {
+        this.id = UUID.randomUUID();
+        this.comment = reviewBody;
+        this.createdAt = Instant.now();
     }
 }
