@@ -39,7 +39,7 @@ public class ReviewService {
 
     public List<Review> getReviewsByRecipeId(UUID recipeId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("recipeId").is(recipeId));
+        query.addCriteria(Criteria.where("recipeId").is(recipeId.toString()));
         return mongoTemplate.find(query, Review.class);
     }
 }
