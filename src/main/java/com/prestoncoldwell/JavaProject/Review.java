@@ -20,6 +20,7 @@ public class Review {
     @Field(targetType = FieldType.STRING)
     private UUID id;
 
+    @Field(targetType = FieldType.STRING)
     private UUID recipeId;
     private String userId;
     private Double rating;

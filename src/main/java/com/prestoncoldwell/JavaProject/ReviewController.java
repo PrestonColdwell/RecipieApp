@@ -31,4 +31,16 @@ public class ReviewController {
         List<Review> reviews = reviewService.getReviewsByRecipeId(recipeId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
+
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<Review> updateReview(@PathVariable UUID reviewId, @RequestBody Review updatedReview) {
+        Review review = reviewService.updateReview(reviewId, updatedReview);
+        return review != null ? new ResponseEntity<>(review, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Review> deleteReview(@PathVariable UUID reviewId) {
+        Review review = reviewService.deleteReview(reviewId);
+        return review != null ? new ResponseEntity<>(review, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

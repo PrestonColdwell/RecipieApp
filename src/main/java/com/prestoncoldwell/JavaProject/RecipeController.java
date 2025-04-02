@@ -3,10 +3,7 @@ package com.prestoncoldwell.JavaProject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,16 +20,38 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<List<Recipe>> getAllRecipes() {
-        return new ResponseEntity<List<Recipe>>(recipeService.allRecipes(), HttpStatus.OK);
+        return new ResponseEntity<>(recipeService.allRecipes(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Recipe>> getRecipeById(@PathVariable UUID id) {
         Optional<Recipe> recipe = recipeService.singleRecipe(id);
         if (recipe.isPresent()) {
-            return new ResponseEntity<Optional<Recipe>>(recipe, HttpStatus.OK);
+            return new ResponseEntity<>(recipe, HttpStatus.OK);
         } else {
-            return new ResponseEntity<Optional<Recipe>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+        Recipe createdRecipe = recipeService.createRecipe(recipe);
+        return new ResponseEntity<>(createdRecipe, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable UUID id, @RequestBody Recipe updatedRecipe) {
+        Recipe recipe = recipeService.updateRecipe(id, updatedRecipe);
+        if (recipe != null) {
+            return new ResponseEntity<>(recipe, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Recipe> deleteRecipe(@PathVariable UUID id) {
+        Recipe recipe = recipeService.deleteRecipe(id);
+        return recipe != null ? new ResponseEntity<>(recipe, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

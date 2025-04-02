@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,7 +28,7 @@ public class ReviewService {
 
         mongoTemplate.update(Recipe.class)
                 .matching(Criteria.where("id").is(recipeId))
-                .apply(new Update().push("reviewIds").value(review.getId()))
+                .apply(new Update().push("reviewIds").value(review.getId().toString()))
                 .first();
 
         return review;
@@ -41,5 +42,29 @@ public class ReviewService {
         Query query = new Query();
         query.addCriteria(Criteria.where("recipeId").is(recipeId.toString()));
         return mongoTemplate.find(query, Review.class);
+    }
+
+    public Review updateReview(UUID reviewId, Review updatedReview) {
+        Optional<Review> existingReview = reviewRepository.findById(reviewId);
+        if (existingReview.isPresent()) {
+            Review review = existingReview.get();
+            review.setUserId(updatedReview.getUserId());
+            review.setRating(updatedReview.getRating());
+            review.setComment(updatedReview.getComment());
+            review.setCreatedAt(updatedReview.getCreatedAt());
+            return reviewRepository.save(review);
+        } else {
+            return null;
+        }
+    }
+
+    public Review deleteReview(UUID reviewId) {
+        Optional<Review> existingReview = reviewRepository.findById(reviewId);
+        if (existingReview.isPresent()) {
+            reviewRepository.deleteById(reviewId);
+            return existingReview.get();
+        } else {
+            return null;
+        }
     }
 }
